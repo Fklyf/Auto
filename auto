@@ -1,0 +1,36 @@
+@echo off
+:menu
+cls
+echo ===============================
+echo WotLK Server Port Forwarding Menu
+echo ===============================
+echo.
+echo 1 - Open Ports
+echo 2 - Close Ports
+echo 3 - Exit
+echo.
+set /p choice=Enter your choice: 
+
+if "%choice%"=="1" goto open_ports
+if "%choice%"=="2" goto close_ports
+if "%choice%"=="3" goto end
+goto menu
+
+:open_ports
+:: Run as administrator
+C:\Windows\System32\netsh interface portproxy add v4tov4 listenport=8085 listenaddress=0.0.0.0 connectport=8085 connectaddress=127.0.0.1
+C:\Windows\System32\netsh interface portproxy add v4tov4 listenport=3724 listenaddress=0.0.0.0 connectport=3724 connectaddress=127.0.0.1
+echo Ports have been forwarded. Press any key to return to the menu.
+pause >nul
+goto menu
+
+:close_ports
+:: Run as administrator
+C:\Windows\System32\netsh interface portproxy delete v4tov4 listenport=8085 listenaddress=0.0.0.0
+C:\Windows\System32\netsh interface portproxy delete v4tov4 listenport=3724 listenaddress=0.0.0.0
+echo Port forwarding has been removed. Press any key to return to the menu.
+pause >nul
+goto menu
+
+:end
+exit
